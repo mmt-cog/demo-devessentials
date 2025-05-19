@@ -1,0 +1,36 @@
+services:
+  demo-product-main: #I leave the old name here, otherwise each dev would need a docker-compose down --remove-orphans command
+    image: ${DOCKER_REGISTRY-}productsmain:0.7
+    container_name: productsmainfunction
+    build:
+      context: .
+      dockerfile: Products.Main/Dockerfile
+    environment:
+      "ENV_ALIAS": "Development"
+      "SERVICE_BUS": "Endpoint=sb://host.docker.internal;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
+      # "SERVICE_BUS__fullyQualifiedNamespace": "https://PUT-YOUR-NAMESPACE-HERE.servicebus.windows.net"
+
+      "AZURE_STORAGE": "UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://host.docker.internal"
+      #"AZURE_STORAGE__blobServiceUrl": "https://PUT-YOUR-STORAGEACCNAME-HERE.blob.core.windows.net"
+
+      "AzureWebJobsStorage": "UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://host.docker.internal"
+       
+      "AzureFunctionSettings:DestinationBucket": "file-repository"
+
+
+  demo-product-sendmail:
+    image: ${DOCKER_REGISTRY-}productssendmail:0.8
+    container_name: productssendmailfunction
+    build:
+        context: .
+        dockerfile: Products.SendMail/Dockerfile
+    environment:
+      "SERVICE_BUS": "Endpoint=sb://host.docker.internal;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
+      "Subscription":
+      "EmailTopic": "product-samples"
+      "EmailHost": "host.docker.internal"
+      "EmailHostPort": "25"
+      "SendGridUsername": ""
+      "SendGridPassword": ""
+      "sql_connection": "Server=host.docker.internal; Database=Products; User Id=sa; Password=${SQL_PASSWORD}; enlist=false;TrustServerCertificate=True;"
+

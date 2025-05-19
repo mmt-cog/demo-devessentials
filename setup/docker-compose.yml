@@ -1,0 +1,26 @@
+include:
+  - ./ServiceBus-Emulator/docker-compose.yml
+services:
+  azurite:
+    container_name: azurite
+    image: mcr.microsoft.com/azure-storage/azurite
+    ports:
+      - "10000:10000"
+      - "10001:10001"
+      - "10002:10002"
+  azure-cli:
+    container_name: azurite_cli
+    image: mcr.microsoft.com/azure-cli:2.62.0-cbl-mariner2.0
+    volumes:
+      - ./scripts/linux:/scripts
+    command: /bin/bash /scripts/azure-init.sh
+    environment:
+        AZURE_STORAGE_CONNECTION_STRING: "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://host.docker.internal:10000/devstoreaccount1;QueueEndpoint=http://host.docker.internal:10001/devstoreaccount1;TableEndpoint=http://host.docker.internal:10002/devstoreaccount1"
+    depends_on:
+      - azurite
+  papercut-smtp:
+    ports:
+      - '8025:80'
+      - '25:25'
+    image: 'changemakerstudiosus/papercut-smtp:latest'
+

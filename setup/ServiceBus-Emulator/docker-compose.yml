@@ -1,0 +1,40 @@
+name: microsoft-azure-servicebus-emulator
+services:
+  emulator:
+    container_name: "servicebus-emulator"
+    image: mcr.microsoft.com/azure-messaging/servicebus-emulator:latest
+    volumes:
+      - "${CONFIG_PATH}:/ServiceBus_Emulator/ConfigFiles/Config.json"
+    ports:
+      - "5671:5671"
+      - "5672:5672"
+    environment:
+      SQL_SERVER: sqlserver 
+      MSSQL_SA_PASSWORD: "${SQL_PASSWORD}"  # Password should be same as what is set for SQL Edge  
+      ACCEPT_EULA: ${ACCEPT_EULA}
+      AZURE_SERVICEBUS_CONNECTION_STRING: Endpoint=sb://0.0.0.0/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - sqlserver
+    networks:
+      sb-emulator:
+        aliases:
+          - "sb-emulator"
+  sqlserver:
+    container_name: "sqlserver"
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    networks:
+      sb-emulator:
+        aliases:
+          - "sqlserver"
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "${SQL_PASSWORD}"
+    ports:
+      - "1433:1433"
+networks:
+  sb-emulator:
+    name: "sb-emulator"
+    driver: bridge
+

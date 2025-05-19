@@ -1,0 +1,37 @@
+<Project Sdk="MSBuild.Sdk.SqlProj/3.1.2">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <SqlServerVersion>Sql160</SqlServerVersion>
+        <RunSqlCodeAnalysis>True</RunSqlCodeAnalysis>
+        <!-- For additional properties that can be set here, please refer to https://github.com/rr-wfm/MSBuild.Sdk.SqlProj#model-properties -->
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SqlServer.Dacpacs.Master" Version="160.2.4" DacpacName="master" DatabaseVariableLiteralValue="master" />
+        <PackageReference Include="Microsoft.SqlServer.Dacpacs.Msdb" Version="160.1.2" DacpacName="msdb" DatabaseVariableLiteralValue="msdb" />
+    </ItemGroup>
+    <ItemGroup>
+      <SqlCmdVariable Include="Common">
+        <DefaultValue>Common</DefaultValue>
+        <Value>$(SqlCmdVar__1)</Value>
+      </SqlCmdVariable>
+    </ItemGroup>
+    <ItemGroup>
+        <Content Remove="Scripts\ScriptsIgnoredOnImport.sql" />
+        <ProjectReference Include="../Common/Common.csproj" DatabaseSqlCmdVariable="Common"/>
+
+        <!-- These packages adds additional code analysis rules -->
+        <!-- We recommend using these, but they can be removed if desired -->
+        <PackageReference Include="ErikEJ.DacFX.SqlServer.Rules" Version="1.2.1">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="ErikEJ.DacFX.TSQLSmellSCA" Version="1.2.1">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <!-- Refer to https://github.com/rr-wfm/MSBuild.Sdk.SqlProj#publishing-support for supported publishing options -->
+    </PropertyGroup>
+</Project>

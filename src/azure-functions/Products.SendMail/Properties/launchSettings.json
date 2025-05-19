@@ -1,0 +1,46 @@
+{
+    "profiles": {
+        "Development": {
+            "commandName": "Project",
+            "commandLineArgs": "--port 7168",
+            "environmentVariables": {
+                "SERVICE_BUS": "Endpoint=sb://localhost;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;",
+                "EmailTopic": "product-samples",
+                "Db-RepositoryBR": "Server=localhost;Port=3306;Database=RepositoryBR;Uid=WAStarGate;Pwd=P@ssw0rd;",
+                "EmailHost": "host.docker.internal",
+                "EmailHostPort": "25",
+                "SendGridUsername": "",
+                "SendGridPassword": ""
+            }
+        },
+        "Production": {
+            "commandName": "Project",
+            "commandLineArgs": "--port 7168",
+            "environmentVariables": {
+                "KeyVaultUri": "https://az-my-test-keyvault.vault.azure.net/",
+                "SERVICE_BUS__fullyQualifiedNamespace": "https://srv-bus.servicebus.windows.net",
+                "EmailTopic": "product-samples",
+                "EmailHost": "host.docker.internal",
+                "EmailHostPort": "25",
+                "SendGridUsername": "",
+                "SendGridPassword": ""
+            }
+        },
+        "Container (Dockerfile)": {
+            "commandName": "Docker",
+            "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+            "containerRunArguments": "--init",
+            "httpPort": 33045,
+            "environmentVariables": {
+                "SERVICE_BUS": "Endpoint=sb://host.docker.internal;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;",
+                "EmailTopic": "product-samples",
+                "Db-RepositoryBR": "Server=host.docker.internal;Port=3306;Database=RepositoryBR;Uid=WAStarGate;Pwd=P@ssw0rd;",
+                "EmailHost": "host.docker.internal",
+                "EmailHostPort": "25",
+                "SendGridUsername": "",
+                "SendGridPassword": ""
+            },
+            "useSSL": false
+        }
+    }
+}
