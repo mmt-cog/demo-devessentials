@@ -1,6 +1,6 @@
 services:
   demo-product-main: #I leave the old name here, otherwise each dev would need a docker-compose down --remove-orphans command
-    image: ${DOCKER_REGISTRY-}productsmain:0.7
+    image: ${DOCKER_REGISTRY-}productsmain:${MAIN_VERSION}
     container_name: productsmainfunction
     build:
       context: .
@@ -19,7 +19,7 @@ services:
 
 
   demo-product-sendmail:
-    image: ${DOCKER_REGISTRY-}productssendmail:0.8
+    image: ${DOCKER_REGISTRY-}productssendmail:${SENDMAIL_VERSION}
     container_name: productssendmailfunction
     build:
         context: .
