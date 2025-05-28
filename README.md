@@ -28,6 +28,11 @@ source ~/.bashrc
 
 ## Workshop
 
+### Workflow presentation
+
+![Basic workflow](docs/BasicWorkflow.drawio.png)
+
+
 ### Verify the topic content
 
 ```sql
