@@ -7,7 +7,7 @@ if [ -z "$1" ]; then
 fi
 
 set -a
-source setup/ServiceBus-Emulator/.env
+source .env
 set +a
 
 debug_action () {
