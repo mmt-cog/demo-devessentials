@@ -27,11 +27,14 @@ public class Main(ILogger<Main> logger, IConfiguration config, ISendMailHelper s
     {
         await ProcessMessageAsync(message);
         await messageActions.CompleteMessageAsync(message);
-        Product newProduct = new Product
+
+        logger.LogInformation("Completing with database entity...");
+        Product newProduct = new()
         {
             Message = message.Body.ToString(),
             Product_code = "Demo"
         };
+
         return newProduct;
     }
 
